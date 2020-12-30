@@ -45,10 +45,45 @@ public class StudentControllerServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		try {
-			listStudents(request , response);
+			String theCommand=request.getParameter("command");
+			
+			if(theCommand==null) {
+				theCommand="LIST";
+			}
+			
+			switch(theCommand) {
+			
+			case "LIST":
+				listStudents(request , response);
+				break;
+			case "ADD":
+				addStudents(request , response);
+				break;
+				
+			default:
+				listStudents(request , response);
+				
+			}
+			
+			
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
+		
+	}
+
+
+	private void addStudents(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		String firstName=request.getParameter("firstName");
+		String lastName=request.getParameter("lastName");
+		String email=request.getParameter("email");
+		
+		Student theStudents= new Student(firstName,lastName,email);
+		
+		studentDbUtil.addStudents(theStudents);
+		
+		listStudents(request , response);
 		
 	}
 
