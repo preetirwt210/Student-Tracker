@@ -21,13 +21,26 @@
 	                  <td>FirstName</td>
 	                   <td>LastName</td>             
 	                   <td>Email</td>
+	                   <td>Action</td>
               
               </tr>
                <c:forEach var="tempStudent" items="${ STUDENT_LIST}">
+               <c:url var="tempLink" value="StudentControllerServlet">
+               <c:param name="command" value="Load"/>
+               <c:param name="studentId" value="${tempStudent.id }"/>
+               </c:url>
+               
+               <c:url var="deleteLink" value="StudentControllerServlet">
+               <c:param name="command" value="DELETE"/>
+               <c:param name="studentId" value="${tempStudent.id }"/>
+               </c:url>
               <tr>
 	                 <td>${tempStudent.getFirstName() }</td>
 	                  <td>${tempStudent.getLastName() }</td>
 	                  <td>${tempStudent.getEmail()}</td>
+	                  <td><a href="${tempLink }">Update</a>
+	                  |
+	                  <a href="${deleteLink }"onclick="if(!(confirm('Are You Sure.You wwant to delete this student?'))) return false">Delete</a></td>
               </tr>
               </c:forEach>
               </table>

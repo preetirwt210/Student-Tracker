@@ -60,6 +60,17 @@ public class StudentControllerServlet extends HttpServlet {
 				addStudents(request , response);
 				break;
 				
+			case "Load":
+				LoadStudents(request , response);
+				break;
+			case "UPDATE":
+				UpdateStudent(request , response);
+				break;
+				
+			case "DELETE":
+				deleteStudent(request , response);
+				break;
+				
 			default:
 				listStudents(request , response);
 				
@@ -70,6 +81,49 @@ public class StudentControllerServlet extends HttpServlet {
 			throw new ServletException(e);
 		}
 		
+	}
+
+
+	private void deleteStudent(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		String theStudentId=request.getParameter("studentId");
+		
+		studentDbUtil.deleteStudent(theStudentId);
+		
+		listStudents(request, response);
+		
+	}
+
+
+	private void UpdateStudent(HttpServletRequest request, HttpServletResponse response)
+	throws Exception{
+		int id=Integer.parseInt(request.getParameter("studentId"));
+		String firstName=request.getParameter("firstName");
+		String lastName=request.getParameter("lastName");
+		String email=request.getParameter("email");
+		
+		Student theStudent=new Student(id,firstName,lastName,email);
+		
+		studentDbUtil.updateStudent(theStudent);
+		
+		listStudents(request,response);
+		
+		
+		
+	}
+
+
+	private void LoadStudents(HttpServletRequest request, HttpServletResponse response) 
+			throws Exception  {
+		
+		String theStudentId= request.getParameter("studentId");
+		
+		Student theStudent=studentDbUtil.getStudent(theStudentId);
+		
+		request.setAttribute("THE_STUDENT", theStudent);
+		
+		RequestDispatcher dispatcher=request.getRequestDispatcher("/update-student-form.jsp");
+		
+		dispatcher.forward(request, response);
 	}
 
 

@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import javax.sql.DataSource;
 
 import com.student.web.entity.Student;
@@ -102,6 +103,108 @@ public class StudentDbUtil {
 		    	  close(myConn,stmt,null);
 		      }
 		
+		
+	}
+
+	public Student getStudent(String theStudentId) throws Exception {
+		
+		Student theStudent=null;
+		
+		Connection myConn=null;
+		PreparedStatement stmt=null;
+		ResultSet rs=null;
+		int studentId;
+		
+		try {
+			
+			 studentId= Integer.parseInt(theStudentId);
+			 
+			 myConn=dataSource.getConnection();
+			 
+			 String sql="select * from student where id=?";
+			 
+			 stmt=myConn.prepareStatement(sql);
+			 
+			 stmt.setInt(1, studentId);
+			 
+			 rs=stmt.executeQuery();
+			 
+			 if(rs.next()) {
+				 String firstName=rs.getString("first_name");
+				 String lastName=rs.getString("last_name");
+				 String email=rs.getString("email");
+				 
+				 theStudent =new Student(studentId, firstName, lastName,email);
+				 
+			 }
+			 else{
+				 throw new Exception("Could not find StudentId: "+ studentId);
+			 }
+			 return theStudent;
+		}
+		finally {
+			close(myConn,stmt,rs);
+		}
+		
+	}
+
+	public void updateStudent(Student theStudent) throws Exception{
+		
+		Connection myConn= null;
+		
+		PreparedStatement stmt= null;
+		
+		
+		
+		try {
+			
+			myConn=dataSource.getConnection();
+			
+			String sql= "update student " 
+			         +"SET first_name=?, last_name=?, email=? "
+					+ "where id =?";
+			
+			stmt=myConn.prepareStatement(sql);
+			
+			stmt.setString(1,theStudent.getFirstName());
+			stmt.setString(2,theStudent.getLastName());
+			stmt.setString(3,theStudent.getEmail());
+			stmt.setInt(4,theStudent.getId());
+			
+			stmt.execute();
+			
+		}
+		finally {
+			close(myConn,stmt,null);
+		}
+		
+		
+		
+	}
+
+	public void deleteStudent(String theStudentId) throws SQLException {
+		
+		Connection myConn=null;
+		PreparedStatement stmt=null;
+		
+		try {
+			int id=Integer.parseInt(theStudentId);
+			
+			myConn=dataSource.getConnection();
+			
+			String sql="delete from student where id=?";
+			
+			stmt=myConn.prepareStatement(sql);
+			
+			stmt.setInt(1, id);
+			
+			stmt.execute();
+			
+			
+		}
+		finally {
+			close(myConn,stmt,null);
+		}
 		
 	}
 }
