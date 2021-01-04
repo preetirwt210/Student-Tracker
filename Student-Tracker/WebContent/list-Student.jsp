@@ -18,10 +18,10 @@
           						/>
               <table>
               <tr>
-	                  <td>FirstName</td>
-	                   <td>LastName</td>             
-	                   <td>Email</td>
-	                   <td>Action</td>
+	                  <th>FirstName</th>
+	                   <th>LastName</th>             
+	                   <th>Email</th>
+	                   <th>Action</th>
               
               </tr>
                <c:forEach var="tempStudent" items="${ STUDENT_LIST}">

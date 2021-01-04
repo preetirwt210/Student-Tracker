@@ -48,4 +48,10 @@ tr {
 	border-style:none;
 	text-align:left;	
 }
+.error{
+	font-style: italic;
+	color:red;
+	margin:5px;
+	
+}
 	
